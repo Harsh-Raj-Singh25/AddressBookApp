@@ -15,3 +15,49 @@ buildNumber.properties
 .project
 # JDT-specific (Eclipse Java Development Tools)
 .classpath
+
+# --- Help and Log Files ---
+.mvn/
+mvnw
+mvnw.cmd
+.help
+*.log
+
+# --- Compiled Class Files ---
+*.class
+
+# --- Package Files ---
+*.jar
+*.war
+*.ear
+*.zip
+*.tar.gz
+*.rar
+
+# --- Maven Build Directory ---
+target/
+
+# --- STS / Eclipse Specific ---
+.settings/
+.project
+.classpath
+.factorypath
+.metadata/
+bin/
+*.launch
+*.tmp
+*.bak
+
+# --- IntelliJ IDEA Specific (if you switch) ---
+.idea/
+*.iml
+*.iws
+out/
+
+# --- Operating System Files ---
+.DS_Store
+Thumbs.db
+
+# --- Spring Boot specific ---
+# (Usually included in target, but just in case)
+HELP.md
