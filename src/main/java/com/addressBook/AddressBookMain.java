@@ -2,12 +2,28 @@ package com.addressBook;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import com.addressBook.model.Contact;
+import com.addressBook.model.Contact; 
+import com.addressBook.service.AddressBookService;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ApplicationContext;
 
 @SpringBootApplication
 public class AddressBookMain {
 	public static void main(String[] args) {
-		Contact c1=new Contact("Harsh","Raj","Press","Bhopal","MP","57545","89542178542","harsh252@gmail.com");
-		System.out.println(c1);
+		// Start Spring Context
+		ApplicationContext context = SpringApplication.run(AddressBookMain.class, args);
+
+		// Get the Service Bean from Spring
+		AddressBookService service = context.getBean(AddressBookService.class);
+
+		// UC 2: Adding a new contact
+		Contact newContact = new Contact("Harsh", "Raj", "Press", "Bhopal", "MP", "57545", "89542178542",
+				"harsh252@gmail.com");
+		service.addContact(newContact);
+
+		// Displaying the output
+		System.out.println("--- Address Book Contacts ---");
+		service.getAllContacts().forEach(System.out::println);
 	}
 }
