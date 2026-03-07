@@ -19,7 +19,8 @@ public class AddressBookService {
 	// Method to get all contacts
 	public List<Contact> getAllContacts() {
 		return contactList;
-	} 
+	}
+
 	// method to edit contact
 	public String editContact(String firstName, String lastName, Contact updatedData) {
 		for (Contact contact : contactList) {
@@ -39,5 +40,19 @@ public class AddressBookService {
 			}
 		}
 		return "Contact not found.";
+	}
+
+	// Delete contact method
+
+	public String deleteContact(String firstName, String lastName) {
+		// removeIf returns true if it actually found and removed something
+		boolean isRemoved = contactList.removeIf(contact -> contact.getFirstName().equalsIgnoreCase(firstName)
+				&& contact.getLastName().equalsIgnoreCase(lastName));
+
+		if (isRemoved) {
+			return "Contact deleted successfully!";
+		} else {
+			return "Contact not found.";
+		}
 	}
 }

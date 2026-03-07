@@ -1,17 +1,16 @@
-# Address Book App - UC 3: Edit Contact Functionality
+# Address Book App - UC 4: Delete Contact Functionality
 
 ## Overview
-This Use Case adds the ability to search for an existing contact by their full name and update their contact information (Address, City, State, etc.).
+> This Use Case implements the ability to remove a contact from the Address Book system using the person's first and last name.
 
 ## Features Implemented
-- **Contact Search**: Implemented logic to iterate through the `ArrayList` and locate a specific contact using `firstName` and `lastName`.
-- **Data Update**: Leveraged setter methods to modify the existing object's state in memory.
-- **Case-Insensitive Matching**: Used `equalsIgnoreCase` to ensure user input matches regardless of capitalization.
+- **Contact Removal**: Integrated `removeIf` logic to identify and purge a specific contact from the `ArrayList`.
+- **Success Feedback**: The system now provides a confirmation message if the contact was deleted or an error if the contact didn't exist.
 
 ## Technical Details
-- **Method**: `editContact(String firstName, String lastName, Contact updatedData)`
-- **Logic**: Iterative search followed by field-level updates.
+- **Method**: `deleteContact(String firstName, String lastName)`
+- **Core Logic**: Used Java Streams/Lambda Predicate to filter and remove the target object.
 
 ## Git Progress
-- **Branch**: `feature-uc3`
+- **Branch**: `feature-uc4`
 - **Status**: Completed and Merged to `dev`

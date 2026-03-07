@@ -2,10 +2,9 @@ package com.addressBook;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import com.addressBook.model.Contact; 
+import com.addressBook.model.Contact;
 import com.addressBook.service.AddressBookService;
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 
 @SpringBootApplication
@@ -25,12 +24,13 @@ public class AddressBookMain {
 		// Displaying the output
 		System.out.println("--- Address Book Contacts ---");
 		service.getAllContacts().forEach(System.out::println);
-		
+
 		// UC3
 		System.out.println("\n--- Editing Contact: Harsh Raj ---");
 
 		// Create an object with NEW details
-		Contact newData = new Contact("Harsh", "Raj", "New Street 10", "Indore", "MP", "452001", "9000000000", "harsh_new@gmail.com");
+		Contact newData = new Contact("Harsh", "Raj", "New Street 10", "Indore", "MP", "452001", "9000000000",
+				"harsh_new@gmail.com");
 
 		// Call the edit method
 		String result = service.editContact("Harsh", "Raj", newData);
@@ -38,5 +38,14 @@ public class AddressBookMain {
 
 		// Print list again to verify change
 		service.getAllContacts().forEach(System.out::println);
+
+		// UC4- delete contact by name 
+		System.out.println("\n--- Deleting Contact: Harsh Raj ---");
+		// Call the delete method
+		String deleteResult = service.deleteContact("Harsh", "Raj");
+		System.out.println(deleteResult);
+
+		// Check if list is empty now
+		System.out.println("Contacts remaining: " + service.getAllContacts().size());
 	}
 }
