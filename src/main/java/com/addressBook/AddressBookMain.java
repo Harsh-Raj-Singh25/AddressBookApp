@@ -25,5 +25,18 @@ public class AddressBookMain {
 		// Displaying the output
 		System.out.println("--- Address Book Contacts ---");
 		service.getAllContacts().forEach(System.out::println);
+		
+		// UC3
+		System.out.println("\n--- Editing Contact: Harsh Raj ---");
+
+		// Create an object with NEW details
+		Contact newData = new Contact("Harsh", "Raj", "New Street 10", "Indore", "MP", "452001", "9000000000", "harsh_new@gmail.com");
+
+		// Call the edit method
+		String result = service.editContact("Harsh", "Raj", newData);
+		System.out.println(result);
+
+		// Print list again to verify change
+		service.getAllContacts().forEach(System.out::println);
 	}
 }

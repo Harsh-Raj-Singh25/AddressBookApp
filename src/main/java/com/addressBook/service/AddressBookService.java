@@ -19,5 +19,25 @@ public class AddressBookService {
 	// Method to get all contacts
 	public List<Contact> getAllContacts() {
 		return contactList;
+	} 
+	// method to edit contact
+	public String editContact(String firstName, String lastName, Contact updatedData) {
+		for (Contact contact : contactList) {
+			// We use the equals logic we wrote in UC1!
+			if (contact.getFirstName().equalsIgnoreCase(firstName)
+					&& contact.getLastName().equalsIgnoreCase(lastName)) {
+
+				// Updating the fields
+				contact.setAddress(updatedData.getAddress());
+				contact.setCity(updatedData.getCity());
+				contact.setState(updatedData.getState());
+				contact.setZip(updatedData.getZip());
+				contact.setPhoneNumber(updatedData.getPhoneNumber());
+				contact.setEmail(updatedData.getEmail());
+
+				return "Contact updated successfully!";
+			}
+		}
+		return "Contact not found.";
 	}
 }
