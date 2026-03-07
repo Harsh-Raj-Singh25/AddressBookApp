@@ -1,16 +1,17 @@
-# Address Book App - UC 4: Delete Contact Functionality
+# Address Book App - UC 5: Multiple Contacts Functionality
 
 ## Overview
-> This Use Case implements the ability to remove a contact from the Address Book system using the person's first and last name.
+This Use Case expands the system's capability to handle multiple contact entries simultaneously, moving from single-entry additions to bulk data processing.
 
 ## Features Implemented
-- **Contact Removal**: Integrated `removeIf` logic to identify and purge a specific contact from the `ArrayList`.
-- **Success Feedback**: The system now provides a confirmation message if the contact was deleted or an error if the contact didn't exist.
+- **Bulk Addition Endpoint**: Added `/addressbook/add-multiple` to handle a JSON Array of contact objects.
+- **Collection Processing**: Enhanced the Service layer to iterate through lists and persist multiple entities to the internal memory.
 
 ## Technical Details
-- **Method**: `deleteContact(String firstName, String lastName)`
-- **Core Logic**: Used Java Streams/Lambda Predicate to filter and remove the target object.
+- **Method**: `addMultipleContacts(List<Contact> contacts)`
+- **Request Type**: `POST`
+- **Data Format**: Accepts a JSON Array `[...]` containing multiple contact objects.
 
 ## Git Progress
-- **Branch**: `feature-uc4`
+- **Branch**: `feature-uc5`
 - **Status**: Completed and Merged to `dev`

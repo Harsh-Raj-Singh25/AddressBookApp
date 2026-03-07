@@ -3,7 +3,11 @@ package com.addressBook;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import com.addressBook.model.Contact;
-import com.addressBook.service.AddressBookService;
+import com.addressBook.service.AddressBookService; 
+
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.boot.SpringApplication;
 import org.springframework.context.ApplicationContext;
 
@@ -47,5 +51,16 @@ public class AddressBookMain {
 
 		// Check if list is empty now
 		System.out.println("Contacts remaining: " + service.getAllContacts().size());
+		
+
+		// uc5 - add multiple contacts
+		System.out.println(" \n --- Add multiple contacts ");
+		List<Contact> bulkList = new ArrayList<>();
+		bulkList.add(new Contact("Harsh", "Raj", "Street 1", "Bhopal", "MP", "111", "999", "h@test.com"));
+		bulkList.add(new Contact("Aman", "Kumar", "Street 2", "Delhi", "DL", "222", "888", "a@test.com"));
+
+		service.addMultipleContacts(bulkList);
+		System.out.println("--- Address Book total Contacts ---");
+		service.getAllContacts().forEach(System.out::println);
 	}
 }

@@ -55,4 +55,12 @@ public class AddressBookService {
 			return "Contact not found.";
 		}
 	}
+
+//  method to ADD multiple contacts
+	public String addMultipleContacts(List<Contact> contacts) {
+		for (Contact contact : contacts) {
+			contactList.add(contact);
+		}
+		return contacts.size() + " contacts added successfully!";
+	}
 }
