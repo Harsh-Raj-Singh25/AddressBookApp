@@ -9,6 +9,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 
 import java.util.Arrays;
+import java.util.List;
 
 @SpringBootApplication
 public class AddressBookMain {
@@ -53,7 +54,7 @@ public class AddressBookMain {
 					"Book: " + bookName + " | Contacts: " + abService.getAddressBook(bookName).getContactList().size());
 		});
 
-		// UC 7 
+		// UC 7
 		// 1. Create a book
 		abService.createNewAddressBook("Personal");
 		AddressBook myBook = abService.getAddressBook("Personal");
@@ -68,5 +69,14 @@ public class AddressBookMain {
 		System.out.println("Second Attempt: " + contactService.addContactSecurely(myBook, c4)); // Should fail
 
 		System.out.println("Total contacts in Personal: " + myBook.getContactList().size());
+
+		// Inside main method
+		System.out.println("\n--- UC 8: Searching Across All Books ---");
+
+		// Searching for anyone in "Bhopal" regardless of which book they are in
+		List<Contact> bhopalResidents = abService.searchByCity("Bhopal");
+
+		System.out.println("People found in Bhopal: " + bhopalResidents.size());
+		bhopalResidents.forEach(person -> System.out.println(person.getFirstName() + " " + person.getLastName()));
 	}
 }

@@ -7,6 +7,8 @@ import com.addressBook.service.ContactService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import java.util.Collections;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class AddressBookServiceTest {
@@ -78,5 +80,33 @@ public class AddressBookServiceTest {
 		String result2 = contactService.addContactSecurely(book, c2);
 		assertEquals("Duplicate Entry! Harsh already exists in this book.", result2);
 		assertEquals(1, book.getContactList().size()); // Ensure only one was added
+	}
+
+	// uc8
+	@Test
+	public void testSearchByCityAcrossMultipleBooks() {
+		// 1. Create multiple books
+		abService.createNewAddressBook("Personal");
+		abService.createNewAddressBook("Work");
+
+		// 2. Add people in the same city to DIFFERENT books
+		Contact c1 = new Contact("Harsh", "Raj", "Street 1", "Bhopal", "MP", "462001", "98765", "h@p.com");
+		Contact c2 = new Contact("Amit", "Sharma", "Street 2", "Bhopal", "MP", "462022", "11111", "a@w.com");
+		Contact c3 = new Contact("John", "Doe", "Wall St", "New York", "NY", "10001", "22222", "j@n.com");
+
+		contactService.addContacts(abService.getAddressBook("Personal"), Collections.singletonList(c1));
+		contactService.addContacts(abService.getAddressBook("Work"), Collections.singletonList(c2));
+		contactService.addContacts(abService.getAddressBook("Work"), Collections.singletonList(c3));
+
+		// 3. Perform the search across all books (UC 8)
+		List<Contact> bhopalResults = abService.searchByCity("Bhopal");
+
+		// 4. Assertions
+		assertEquals(2, bhopalResults.size(), "Should find 2 people in Bhopal across all books");
+		assertTrue(bhopalResults.stream().anyMatch(c -> c.getFirstName().equals("Harsh")));
+		assertTrue(bhopalResults.stream().anyMatch(c -> c.getFirstName().equals("Amit")));
+
+		// Ensure New York resident is not in the list
+		assertFalse(bhopalResults.stream().anyMatch(c -> c.getFirstName().equals("John")));
 	}
 }
