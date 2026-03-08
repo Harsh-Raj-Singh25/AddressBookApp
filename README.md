@@ -1,15 +1,15 @@
-# Address Book App - UC 9: Categorized Viewing (City/State Dictionaries)
+# Address Book App - UC 10: Count by City or State
 
 ## Overview
-Implemented the capability to view and maintain contacts grouped by their geographic locations. This allows for quick access to all residents of a specific City or State.
+>Implemented statistical reporting to retrieve the total number of contact persons categorized by their geographic location (City or State).
 
 ## Features Implemented
-- **Categorized Dictionary**: Created a data structure that maps a City/State name (Key) to a List of Contacts (Value).
-- **Java Streams Grouping**: Utilized `Collectors.groupingBy` for clean and efficient aggregation of data.
-- **System-Wide View**: The logic aggregates data from all independent Address Books managed by the system.
+- **Categorized Counting**: The system provides a summary of how many contacts reside in each unique City or State.
+- **Java Streams (Collectors.counting)**: Utilized the functional programming approach to aggregate and count data efficiently across the entire system.
+- **Cross-Book Aggregation**: Like previous UCs, this count is system-wide, spanning all named Address Books.
 
 ## Technical Details
-- **Logic**: `stream().collect(Collectors.groupingBy(Contact::getCity))`.
+- **Methodology**: `Collectors.groupingBy(Field, Collectors.counting())`.
 - **Endpoints**:
-    - `GET /system/view/by-city`
-    - `GET /system/view/by-state`
+    - `GET /system/count/by-city`
+    - `GET /system/count/by-state`

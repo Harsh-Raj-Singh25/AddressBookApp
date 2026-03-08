@@ -49,10 +49,20 @@ public class AddressBookService {
 		return addressBookSystem.values().stream().flatMap(book -> book.getContactList().stream())
 				.collect(Collectors.groupingBy(Contact::getCity)); // Groups contacts by their City field
 	}
-
 	// UC 9: View Persons categorized by State (Returns a Dictionary)
 	public Map<String, List<Contact>> viewByState() {
 		return addressBookSystem.values().stream().flatMap(book -> book.getContactList().stream())
 				.collect(Collectors.groupingBy(Contact::getState)); // Groups contacts by their State field
+	}
+
+	// UC 10: Get count of persons by City
+	public Map<String, Long> getCountByCity() {
+		return addressBookSystem.values().stream().flatMap(book -> book.getContactList().stream())
+				.collect(Collectors.groupingBy(Contact::getCity, Collectors.counting())); //
+	}
+	// UC 10: Get count of persons by State
+	public Map<String, Long> getCountByState() {
+		return addressBookSystem.values().stream().flatMap(book -> book.getContactList().stream())
+				.collect(Collectors.groupingBy(Contact::getState, Collectors.counting())); //
 	}
 }

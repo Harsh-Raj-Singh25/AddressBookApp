@@ -74,13 +74,18 @@ public class AddressBookMain {
 		List<Contact> bhopalResidents = abService.searchByCity("Bhopal");
 		System.out.println("People found in Bhopal: " + bhopalResidents.size());
 		bhopalResidents.forEach(person -> System.out.println(person.getFirstName() + " " + person.getLastName()));
-		
+
 		// UC9
 		System.out.println("\n--- UC 9: Viewing Dictionary by City ---");
 		Map<String, List<Contact>> cityDictionary = abService.viewByCity();
 		cityDictionary.forEach((city, people) -> {
-		    System.out.println("City: " + city + " | Residents: " + people.size());
-		    people.forEach(p -> System.out.println(" - " + p.getFirstName()));
+			System.out.println("City: " + city + " | Residents: " + people.size());
+			people.forEach(p -> System.out.println(" - " + p.getFirstName()));
 		});
+
+		// UC10
+		System.out.println("\n--- UC 10: Contact Statistics ---");
+		Map<String, Long> cityCounts = abService.getCountByCity();
+		cityCounts.forEach((city, count) -> System.out.println("City: " + city + " | Total Contacts: " + count));
 	}
 }

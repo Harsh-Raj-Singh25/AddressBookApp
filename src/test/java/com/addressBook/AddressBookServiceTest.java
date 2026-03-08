@@ -112,7 +112,7 @@ public class AddressBookServiceTest {
 		// Ensure New York resident is not in the list
 		assertFalse(bhopalResults.stream().anyMatch(c -> c.getFirstName().equals("John")));
 	}
-	
+
 	// UC9
 	@Test
 	public void testGroupingByCity() {
@@ -127,5 +127,22 @@ public class AddressBookServiceTest {
 		// Assert that "Bhopal" key exists and contains exactly 2 people
 		assertTrue(cityMap.containsKey("Bhopal"));
 		assertEquals(2, cityMap.get("Bhopal").size());
+	}
+
+	// UC10
+	@Test
+	public void testCountByCity() {
+		abService.createNewAddressBook("StatsBook");
+		AddressBook book = abService.getAddressBook("StatsBook");
+
+		contactService.addContacts(book,
+				Arrays.asList(new Contact("User1", "L1", "A1", "Bhopal", "MP", "1", "1", "u1@t.com"),
+						new Contact("User2", "L2", "A2", "Bhopal", "MP", "2", "2", "u2@t.com"),
+						new Contact("User3", "L3", "A3", "Indore", "MP", "3", "3", "u3@t.com")));
+
+		Map<String, Long> counts = abService.getCountByCity();
+
+		assertEquals(2, counts.get("Bhopal")); //
+		assertEquals(1, counts.get("Indore")); //
 	}
 }
