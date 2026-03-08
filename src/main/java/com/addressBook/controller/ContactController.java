@@ -61,4 +61,14 @@ public class ContactController {
 		// Calls the service method that uses Java Streams and equals() override
 		return service.addContactSecurely(book, contact);
 	}
+
+	// UC 11: Get sorted entries for a specific address book
+	@GetMapping("/{bookName}/sorted")
+	public List<Contact> getSorted(@PathVariable String bookName) {
+		AddressBook book = abService.getAddressBook(bookName);
+		if (book == null)
+			return null;
+
+		return service.getSortedContacts(book);
+	}
 }

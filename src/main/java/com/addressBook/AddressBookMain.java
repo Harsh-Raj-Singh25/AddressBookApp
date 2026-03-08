@@ -87,5 +87,15 @@ public class AddressBookMain {
 		System.out.println("\n--- UC 10: Contact Statistics ---");
 		Map<String, Long> cityCounts = abService.getCountByCity();
 		cityCounts.forEach((city, count) -> System.out.println("City: " + city + " | Total Contacts: " + count));
+
+		// UC11
+		System.out.println("\n--- UC 11: Sorted Address Book Entries ---");
+		AddressBook book1 = abService.getAddressBook("Personal");
+		if (book1 != null) {
+			List<Contact> sortedList = contactService.getSortedContacts(book1);
+
+			// Prints the person entry using the overridden toString() method
+			sortedList.forEach(System.out::println);
+		}
 	}
 }

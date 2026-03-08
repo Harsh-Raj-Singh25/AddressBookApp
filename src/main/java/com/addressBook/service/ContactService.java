@@ -4,7 +4,9 @@ import com.addressBook.model.AddressBook;
 import com.addressBook.model.Contact;
 import org.springframework.stereotype.Service;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ContactService {
@@ -89,16 +91,25 @@ public class ContactService {
 		}
 		return false;
 	}
+
 	public String addContactSecurely(AddressBook book, Contact newContact) {
-        // UC 7: Use Java Streams to check for duplicates by name
-        boolean isDuplicate = book.getContactList().stream()
-                .anyMatch(existingContact -> existingContact.equals(newContact));
+		// UC 7: Use Java Streams to check for duplicates by name
+		boolean isDuplicate = book.getContactList().stream()
+				.anyMatch(existingContact -> existingContact.equals(newContact));
 
-        if (isDuplicate) {
-            return "Duplicate Entry! " + newContact.getFirstName() + " already exists in this book.";
-        }
+		if (isDuplicate) {
+			return "Duplicate Entry! " + newContact.getFirstName() + " already exists in this book.";
+		}
 
-        book.getContactList().add(newContact);
-        return "Contact added successfully.";
-    }
+		book.getContactList().add(newContact);
+		return "Contact added successfully.";
+	}
+
+	// UC 11: Sort entries alphabetically by Person's name using Java Streams
+	public List<Contact> getSortedContacts(AddressBook book) {
+		return book.getContactList().stream()
+				.sorted(Comparator.comparing(Contact::getFirstName, String.CASE_INSENSITIVE_ORDER)
+						.thenComparing(Contact::getLastName, String.CASE_INSENSITIVE_ORDER))
+				.collect(Collectors.toList());
+	}
 }
