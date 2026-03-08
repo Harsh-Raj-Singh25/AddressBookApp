@@ -10,6 +10,7 @@ import org.springframework.context.ApplicationContext;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 @SpringBootApplication
 public class AddressBookMain {
@@ -58,25 +59,28 @@ public class AddressBookMain {
 		// 1. Create a book
 		abService.createNewAddressBook("Personal");
 		AddressBook myBook = abService.getAddressBook("Personal");
-
 		// 2. Create two identical contacts (Same Name)
 		Contact c3 = new Contact("Harsh", "Raj", "MP Nagar", "Bhopal", "MP", "462001", "98765", "h@t.com");
 		Contact c4 = new Contact("Harsh", "Raj", "Arera", "Bhopal", "MP", "462016", "11111", "copy@t.com");
-
 		// 3. Try adding both
 		System.out.println("--- UC 7: Duplicate Check Test ---");
 		System.out.println("First Attempt: " + contactService.addContactSecurely(myBook, c3));
 		System.out.println("Second Attempt: " + contactService.addContactSecurely(myBook, c4)); // Should fail
-
 		System.out.println("Total contacts in Personal: " + myBook.getContactList().size());
 
-		// Inside main method
+		// UC8
 		System.out.println("\n--- UC 8: Searching Across All Books ---");
-
 		// Searching for anyone in "Bhopal" regardless of which book they are in
 		List<Contact> bhopalResidents = abService.searchByCity("Bhopal");
-
 		System.out.println("People found in Bhopal: " + bhopalResidents.size());
 		bhopalResidents.forEach(person -> System.out.println(person.getFirstName() + " " + person.getLastName()));
+		
+		// UC9
+		System.out.println("\n--- UC 9: Viewing Dictionary by City ---");
+		Map<String, List<Contact>> cityDictionary = abService.viewByCity();
+		cityDictionary.forEach((city, people) -> {
+		    System.out.println("City: " + city + " | Residents: " + people.size());
+		    people.forEach(p -> System.out.println(" - " + p.getFirstName()));
+		});
 	}
 }

@@ -1,23 +1,15 @@
-# Address Book System - UC 8: Cross-Book Search
+# Address Book App - UC 9: Categorized Viewing (City/State Dictionaries)
 
 ## Overview
->Implemented a global search capability that allows users to query contacts by **City** or **State** across the entire system, regardless of which specific Address Book they belong to.
+Implemented the capability to view and maintain contacts grouped by their geographic locations. This allows for quick access to all residents of a specific City or State.
 
-## Implementation Logic
-The system maintains a `Map<String, AddressBook>` (UC 6). Searching across all books requires traversing this map and filtering the combined contact lists.
+## Features Implemented
+- **Categorized Dictionary**: Created a data structure that maps a City/State name (Key) to a List of Contacts (Value).
+- **Java Streams Grouping**: Utilized `Collectors.groupingBy` for clean and efficient aggregation of data.
+- **System-Wide View**: The logic aggregates data from all independent Address Books managed by the system.
 
-### Key Technical Components:
-* **Java Streams (flatMap)**: Used to transform the collection of `AddressBook` objects into a single, unified stream of `Contact` objects for easy filtering.
-* **Case-Insensitive Filtering**: The search uses `.equalsIgnoreCase()` to ensure results are found regardless of the user's input case.
-* **Collection Support**: The search returns a `List<Contact>`, allowing the system to display multiple individuals living in the same area.
-
-## How to Test via API
-1.  **Add Data**: Create at least two address books and add contacts with the same City name to both.
-2.  **Execute Search**: Perform a **GET** request to the following endpoint:
-    * `GET /system/search/city/{cityName}`
-    * `GET /system/search/state/{stateName}`
-3.  **Expected Result**: A JSON array containing all contacts matching that location from every address book in the system.
-
-## Verification
-- Search results correctly aggregate data from multiple books.
-- The logic utilizes the modern Java Streams API for optimal performance and readability.
+## Technical Details
+- **Logic**: `stream().collect(Collectors.groupingBy(Contact::getCity))`.
+- **Endpoints**:
+    - `GET /system/view/by-city`
+    - `GET /system/view/by-state`

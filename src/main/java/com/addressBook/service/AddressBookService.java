@@ -43,4 +43,16 @@ public class AddressBookService {
 		return addressBookSystem.values().stream().flatMap(book -> book.getContactList().stream())
 				.filter(contact -> contact.getState().equalsIgnoreCase(state)).collect(Collectors.toList());
 	}
+
+	// UC 9: View Persons categorized by City (Returns a Dictionary)
+	public Map<String, List<Contact>> viewByCity() {
+		return addressBookSystem.values().stream().flatMap(book -> book.getContactList().stream())
+				.collect(Collectors.groupingBy(Contact::getCity)); // Groups contacts by their City field
+	}
+
+	// UC 9: View Persons categorized by State (Returns a Dictionary)
+	public Map<String, List<Contact>> viewByState() {
+		return addressBookSystem.values().stream().flatMap(book -> book.getContactList().stream())
+				.collect(Collectors.groupingBy(Contact::getState)); // Groups contacts by their State field
+	}
 }

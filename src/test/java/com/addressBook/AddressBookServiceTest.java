@@ -6,8 +6,11 @@ import com.addressBook.service.AddressBookService;
 import com.addressBook.service.ContactService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -108,5 +111,21 @@ public class AddressBookServiceTest {
 
 		// Ensure New York resident is not in the list
 		assertFalse(bhopalResults.stream().anyMatch(c -> c.getFirstName().equals("John")));
+	}
+	
+	// UC9
+	@Test
+	public void testGroupingByCity() {
+		abService.createNewAddressBook("A");
+		Contact c1 = new Contact("Harsh", "Raj", "S1", "Bhopal", "MP", "1", "1", "h@t.com");
+		Contact c2 = new Contact("Amit", "S", "S2", "Bhopal", "MP", "2", "2", "a@t.com");
+
+		contactService.addContacts(abService.getAddressBook("A"), Arrays.asList(c1, c2));
+
+		Map<String, List<Contact>> cityMap = abService.viewByCity();
+
+		// Assert that "Bhopal" key exists and contains exactly 2 people
+		assertTrue(cityMap.containsKey("Bhopal"));
+		assertEquals(2, cityMap.get("Bhopal").size());
 	}
 }
