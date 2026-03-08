@@ -1,66 +1,56 @@
 package com.addressBook;
 
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-
+import com.addressBook.model.AddressBook;
 import com.addressBook.model.Contact;
-import com.addressBook.service.AddressBookService; 
-
-import java.util.ArrayList;
-import java.util.List;
-
+import com.addressBook.service.AddressBookService;
+import com.addressBook.service.ContactService;
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
+
+import java.util.Arrays;
 
 @SpringBootApplication
 public class AddressBookMain {
 	public static void main(String[] args) {
-		// Start Spring Context
 		ApplicationContext context = SpringApplication.run(AddressBookMain.class, args);
 
-		// Get the Service Bean from Spring
-		AddressBookService service = context.getBean(AddressBookService.class);
+		// Retrieve both separate services from the Spring Context
+		AddressBookService abService = context.getBean(AddressBookService.class);
+		ContactService contactService = context.getBean(ContactService.class);
 
-		// UC 2: Adding a new contact
-		Contact newContact = new Contact("Harsh", "Raj", "Press", "Bhopal", "MP", "57545", "89542178542",
-				"harsh252@gmail.com");
-		service.addContact(newContact);
+		// 1. UC 6: Use AddressBookService to create separate books
+		abService.createNewAddressBook("Personal");
+		abService.createNewAddressBook("Work");
 
-		// Displaying the output
-		System.out.println("--- Address Book Contacts ---");
-		service.getAllContacts().forEach(System.out::println);
+		// 2. UC 2 & 5: Create some contacts
+		Contact c1 = new Contact("Harsh", "Raj", "MP Nagar", "Bhopal", "MP", "462001", "9876543210", "harsh@test.com");
+		Contact c2 = new Contact("John", "Doe", "Baker St", "London", "UK", "NW1", "123456789", "john@test.com");
 
-		// UC3
-		System.out.println("\n--- Editing Contact: Harsh Raj ---");
+		// 3. Coordination: Get the specific book and use ContactService to add data
+		AddressBook personalBook = abService.getAddressBook("Personal");
+		AddressBook workBook = abService.getAddressBook("Work");
 
-		// Create an object with NEW details
-		Contact newData = new Contact("Harsh", "Raj", "New Street 10", "Indore", "MP", "452001", "9000000000",
-				"harsh_new@gmail.com");
+		if (personalBook != null) {
+			contactService.addContacts(personalBook, Arrays.asList(c1));
+			System.out.println("Added Harsh to Personal Book.");
+		}
 
-		// Call the edit method
-		String result = service.editContact("Harsh", "Raj", newData);
-		System.out.println(result);
+		if (workBook != null) {
+			contactService.addContacts(workBook, Arrays.asList(c2));
+			System.out.println("Added John to Work Book.");
+		}
 
-		// Print list again to verify change
-		service.getAllContacts().forEach(System.out::println);
+		// 4. UC 3: Use ContactService to edit a contact inside a specific book
+		Contact updatedHarsh = new Contact("Harsh", "Raj", "Arera Colony", "Bhopal", "MP", "462016", "9000000000",
+				"harsh_new@test.com");
+		contactService.updateContact(personalBook, "Harsh", "Raj", updatedHarsh);
 
-		// UC4- delete contact by name 
-		System.out.println("\n--- Deleting Contact: Harsh Raj ---");
-		// Call the delete method
-		String deleteResult = service.deleteContact("Harsh", "Raj");
-		System.out.println(deleteResult);
-
-		// Check if list is empty now
-		System.out.println("Contacts remaining: " + service.getAllContacts().size());
-		
-
-		// uc5 - add multiple contacts
-		System.out.println(" \n --- Add multiple contacts ");
-		List<Contact> bulkList = new ArrayList<>();
-		bulkList.add(new Contact("Harsh", "Raj", "Street 1", "Bhopal", "MP", "111", "999", "h@test.com"));
-		bulkList.add(new Contact("Aman", "Kumar", "Street 2", "Delhi", "DL", "222", "888", "a@test.com"));
-
-		service.addMultipleContacts(bulkList);
-		System.out.println("--- Address Book total Contacts ---");
-		service.getAllContacts().forEach(System.out::println);
+		// 5. Final Print to verify the Dictionary Requirement
+		System.out.println("\n--- Final System State ---");
+		abService.listAllBooks().forEach(bookName -> {
+			System.out.println(
+					"Book: " + bookName + " | Contacts: " + abService.getAddressBook(bookName).getContactList().size());
+		});
 	}
 }
