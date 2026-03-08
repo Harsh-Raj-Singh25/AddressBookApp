@@ -1,17 +1,13 @@
-# Address Book App - UC 5: Multiple Contacts Functionality
+# Address Book App - UC 7: Duplicate Entry Prevention
 
 ## Overview
-This Use Case expands the system's capability to handle multiple contact entries simultaneously, moving from single-entry additions to bulk data processing.
+ >Implemented logic to ensure that no two persons with the same name (First Name + Last Name) can exist within the same Address Book.
 
 ## Features Implemented
-- **Bulk Addition Endpoint**: Added `/addressbook/add-multiple` to handle a JSON Array of contact objects.
-- **Collection Processing**: Enhanced the Service layer to iterate through lists and persist multiple entities to the internal memory.
+- **Overridden equals()**: The `Contact` model now compares equality based on `firstName` and `lastName` (case-insensitive).
+- **Java Streams Integration**: Used `stream().anyMatch()` to search for existing contacts before performing an add operation.
+- **Service Validation**: `ContactService` now returns a validation message if a duplicate is detected.
 
 ## Technical Details
-- **Method**: `addMultipleContacts(List<Contact> contacts)`
-- **Request Type**: `POST`
-- **Data Format**: Accepts a JSON Array `[...]` containing multiple contact objects.
-
-## Git Progress
-- **Branch**: `feature-uc5`
-- **Status**: Completed and Merged to `dev`
+- **Search Method**: Collection API with Java Streams.
+- **Validation Criteria**: Comparison of `firstName` and `lastName`.

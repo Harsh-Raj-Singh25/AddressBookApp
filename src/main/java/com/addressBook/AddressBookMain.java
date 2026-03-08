@@ -52,5 +52,21 @@ public class AddressBookMain {
 			System.out.println(
 					"Book: " + bookName + " | Contacts: " + abService.getAddressBook(bookName).getContactList().size());
 		});
+
+		// UC 7 
+		// 1. Create a book
+		abService.createNewAddressBook("Personal");
+		AddressBook myBook = abService.getAddressBook("Personal");
+
+		// 2. Create two identical contacts (Same Name)
+		Contact c3 = new Contact("Harsh", "Raj", "MP Nagar", "Bhopal", "MP", "462001", "98765", "h@t.com");
+		Contact c4 = new Contact("Harsh", "Raj", "Arera", "Bhopal", "MP", "462016", "11111", "copy@t.com");
+
+		// 3. Try adding both
+		System.out.println("--- UC 7: Duplicate Check Test ---");
+		System.out.println("First Attempt: " + contactService.addContactSecurely(myBook, c3));
+		System.out.println("Second Attempt: " + contactService.addContactSecurely(myBook, c4)); // Should fail
+
+		System.out.println("Total contacts in Personal: " + myBook.getContactList().size());
 	}
 }

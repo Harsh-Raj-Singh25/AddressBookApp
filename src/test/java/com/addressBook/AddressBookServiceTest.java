@@ -1,5 +1,5 @@
 package com.addressBook;
- 
+
 import com.addressBook.model.AddressBook;
 import com.addressBook.model.Contact;
 import com.addressBook.service.AddressBookService;
@@ -61,5 +61,22 @@ public class AddressBookServiceTest {
 
 		// Assert that a non-existent book returns null
 		assertNull(abService.getAddressBook("NonExistentBook"));
+	}
+
+	// UC7
+	@Test
+	public void testDuplicateCheck() {
+		AddressBook book = new AddressBook("TestBook");
+		Contact c1 = new Contact("Harsh", "Raj", "Addr1", "City", "ST", "123", "999", "h@t.com");
+		Contact c2 = new Contact("Harsh", "Raj", "DifferentAddr", "City", "ST", "123", "888", "h2@t.com");
+
+		// First add should succeed
+		String result1 = contactService.addContactSecurely(book, c1);
+		assertEquals("Contact added successfully.", result1);
+
+		// Second add with same name should fail (UC 7)
+		String result2 = contactService.addContactSecurely(book, c2);
+		assertEquals("Duplicate Entry! Harsh already exists in this book.", result2);
+		assertEquals(1, book.getContactList().size()); // Ensure only one was added
 	}
 }

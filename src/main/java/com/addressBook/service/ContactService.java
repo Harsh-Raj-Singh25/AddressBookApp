@@ -89,4 +89,16 @@ public class ContactService {
 		}
 		return false;
 	}
+	public String addContactSecurely(AddressBook book, Contact newContact) {
+        // UC 7: Use Java Streams to check for duplicates by name
+        boolean isDuplicate = book.getContactList().stream()
+                .anyMatch(existingContact -> existingContact.equals(newContact));
+
+        if (isDuplicate) {
+            return "Duplicate Entry! " + newContact.getFirstName() + " already exists in this book.";
+        }
+
+        book.getContactList().add(newContact);
+        return "Contact added successfully.";
+    }
 }

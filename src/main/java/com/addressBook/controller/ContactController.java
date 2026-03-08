@@ -1,7 +1,8 @@
 package com.addressBook.controller;
 
-
-import com.addressBook.model.Contact; 
+import com.addressBook.model.AddressBook;
+import com.addressBook.model.Contact;
+import com.addressBook.service.AddressBookService;
 import com.addressBook.service.ContactService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,9 +41,24 @@ public class ContactController {
 	public String deleteContact(@PathVariable String firstName, @PathVariable String lastName) {
 		return service.deleteContact(firstName, lastName);
 	}
+
 	// UC 5: Add Multiple Contacts (POST a List)
 	@PostMapping("/add-multiple")
 	public String addMultiple(@RequestBody List<Contact> contacts) {
-	    return service.addMultipleContacts(contacts);
+		return service.addMultipleContacts(contacts);
+	}
+
+	@Autowired
+	private AddressBookService abService;
+
+	// UC 7: Add contact with Duplicate Check
+	@PostMapping("/{bookName}/add")
+	public String addContact(@PathVariable String bookName, @RequestBody Contact contact) {
+		AddressBook book = abService.getAddressBook(bookName);
+		if (book == null) {
+			return "Error: Address Book '" + bookName + "' does not exist.";
+		}
+		// Calls the service method that uses Java Streams and equals() override
+		return service.addContactSecurely(book, contact);
 	}
 }
