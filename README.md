@@ -1,13 +1,13 @@
-# Address Book App - UC 14: OpenCSV Integration
+# Address Book App - UC 15: GSON Persistence
 
 ## Overview
-Implemented professional-grade data persistence using the OpenCSV library. This allows for structured data interchange, making the Address Book entries compatible with external tools like Microsoft Excel.
+>Implemented a modern data persistence layer using JSON (JavaScript Object Notation). This allows the entire system state, including multiple address books, to be saved and reloaded efficiently.
 
-## Features Implemented
-- **Structured Storage**: Contacts are stored with clear headers and comma-separated columns.
-- **Bean Mapping**: Automated the conversion between Java `Contact` objects and CSV rows using `StatefulBeanToCsv`.
-- **Path Reliability**: Maintained the standard of saving to `src/main/resources` with directory auto-creation.
+## Implementation Details
+- **Library**: Integrated Google's **GSON** for high-performance JSON processing.
+- **Formatting**: Enabled `setPrettyPrinting()` to ensure the generated JSON is human-readable for debugging.
+- **Data Integrity**: The system serializes the entire `Map<String, AddressBook>`, ensuring that book names and their respective contact lists are perfectly preserved.
 
-## API Usage
-- **Write**: `POST http://localhost:8080/system/csv/write`
-- **Read**: `GET http://localhost:8080/system/csv/read`
+## API Endpoints
+- **Save to JSON**: `POST http://localhost:8080/system/json/write`
+- **Load from JSON**: `GET http://localhost:8080/system/json/read`

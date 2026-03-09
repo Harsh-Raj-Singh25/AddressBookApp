@@ -1,0 +1,82 @@
+{
+  "Personal": {
+    "bookName": "Personal",
+    "contactList": [
+      {
+        "firstName": "Harsh",
+        "lastName": "Raj",
+        "address": "Arera Colony",
+        "city": "Bhopal",
+        "state": "MP",
+        "zip": "462016",
+        "phoneNumber": "9000000000",
+        "email": "harsh_new@test.com"
+      }
+    ]
+  },
+  "Friends": {
+    "bookName": "Friends",
+    "contactList": [
+      {
+        "firstName": "Harsh",
+        "lastName": "Raj",
+        "address": "Street 1",
+        "city": "Bhopal",
+        "state": "MP",
+        "zip": "462001",
+        "phoneNumber": "98765",
+        "email": "h@t.com"
+      }
+    ]
+  },
+  "Work": {
+    "bookName": "Work",
+    "contactList": [
+      {
+        "firstName": "John",
+        "lastName": "Doe",
+        "address": "Baker St",
+        "city": "London",
+        "state": "UK",
+        "zip": "NW1",
+        "phoneNumber": "123456789",
+        "email": "john@test.com"
+      }
+    ]
+  },
+  "TravelLog": {
+    "bookName": "TravelLog",
+    "contactList": [
+      {
+        "firstName": "Zoya",
+        "lastName": "Khan",
+        "address": "Street 1",
+        "city": "Bhopal",
+        "state": "MP",
+        "zip": "462001",
+        "phoneNumber": "98765",
+        "email": "z@t.com"
+      },
+      {
+        "firstName": "Amit",
+        "lastName": "Sharma",
+        "address": "Street 2",
+        "city": "Indore",
+        "state": "MP",
+        "zip": "452001",
+        "phoneNumber": "11111",
+        "email": "a@t.com"
+      },
+      {
+        "firstName": "Namrata",
+        "lastName": "Khapre",
+        "address": "St.Paul road",
+        "city": "Pandhurna",
+        "state": "MP",
+        "zip": "10001",
+        "phoneNumber": "22222",
+        "email": "n@n.com"
+      }
+    ]
+  }
+}

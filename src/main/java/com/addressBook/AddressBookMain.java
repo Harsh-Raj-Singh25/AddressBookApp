@@ -123,5 +123,25 @@ public class AddressBookMain {
 		// Verify by reading the file content
 		System.out.println("Reading from file...");
 		abService.readFromFile().forEach(System.out::println);
+
+		// 1. Create Data
+		abService.createNewAddressBook("Friends");
+		AddressBook book2 = abService.getAddressBook("Friends");
+		Contact c5 = new Contact("Harsh", "Raj", "Street 1", "Bhopal", "MP", "462001", "98765", "h@t.com");
+		contactService.addContacts(book2, java.util.Collections.singletonList(c5));
+
+		// 2. UC 15: Write to JSON
+		System.out.println("\n--- UC 15: Saving to JSON ---");
+		String writeStatus = abService.writeToJSON();
+		System.out.println(writeStatus);
+
+		// 3. UC 15: Read from JSON
+		System.out.println("\n--- UC 15: Reloading from JSON ---");
+		Map<String, AddressBook> reloadedData = abService.readFromJSON();
+
+		reloadedData.forEach((bookName, content) -> {
+			System.out.println("Address Book: " + bookName);
+			content.getContactList().forEach(System.out::println);
+		});
 	}
 }

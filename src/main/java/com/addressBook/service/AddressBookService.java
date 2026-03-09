@@ -2,6 +2,9 @@ package com.addressBook.service;
 
 import com.addressBook.model.AddressBook;
 import com.addressBook.model.Contact;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 import com.opencsv.bean.CsvToBeanBuilder;
 import com.opencsv.bean.StatefulBeanToCsv;
 import com.opencsv.bean.StatefulBeanToCsvBuilder;
@@ -21,7 +24,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
-import java.io.Writer; 
+import java.io.Writer;
 
 @Service
 public class AddressBookService {
@@ -135,6 +138,38 @@ public class AddressBookService {
 			return new CsvToBeanBuilder<Contact>(reader).withType(Contact.class).build().parse();
 		} catch (IOException e) {
 			return Collections.emptyList();
+		}
+	}
+
+	private final Path JSON_PATH = Paths.get("src", "main", "resources", "contacts.json");
+	private final Gson gson = new GsonBuilder().setPrettyPrinting().create();
+
+	// UC 15: Write Address Book data to JSON file using GSON
+	public String writeToJSON() {
+		try {
+			Files.createDirectories(JSON_PATH.getParent());
+			try (Writer writer = Files.newBufferedWriter(JSON_PATH)) {
+				// We serialize the entire map to preserve the book names
+				gson.toJson(addressBookSystem, writer);
+				return "JSON file created successfully at: " + JSON_PATH.toAbsolutePath();
+			}
+		} catch (IOException e) {
+			return "JSON Write Error: " + e.getMessage();
+		}
+	}
+
+	// UC 15: Read Address Book data from JSON file
+	public Map<String, AddressBook> readFromJSON() {
+		try (Reader reader = Files.newBufferedReader(JSON_PATH)) {
+			java.lang.reflect.Type type = new TypeToken<Map<String, AddressBook>>() {
+			}.getType();
+			Map<String, AddressBook> importedData = gson.fromJson(reader, type);
+			if (importedData != null) {
+				this.addressBookSystem = importedData;
+			}
+			return this.addressBookSystem;
+		} catch (IOException e) {
+			return Collections.emptyMap();
 		}
 	}
 }

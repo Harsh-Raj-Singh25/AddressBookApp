@@ -1,5 +1,6 @@
 package com.addressBook.controller;
 
+import com.addressBook.model.AddressBook;
 import com.addressBook.model.Contact;
 import com.addressBook.service.AddressBookService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -73,14 +74,26 @@ public class AddressBookController {
 		return abService.readFromFile();
 	}
 
-	// UC 14: Trigger CSV Write
-	@PostMapping("/write")
+	// Change the mapping to be specific to CSV
+	@PostMapping("/csv/write")
 	public String writeCSV() {
 		return abService.writeToCSV();
 	}
-	// UC 14: Trigger CSV Read
-	@GetMapping("/read")
+
+	// Change the mapping to be specific to JSON
+	@PostMapping("/json/write")
+	public String saveJSON() {
+		return abService.writeToJSON();
+	}
+
+	// Do the same for your READ methods to keep them organized
+	@GetMapping("/csv/read")
 	public List<Contact> readCSV() {
 		return abService.readFromCSV();
+	}
+
+	@GetMapping("/json/read")
+	public Map<String, AddressBook> loadJSON() {
+		return abService.readFromJSON();
 	}
 }

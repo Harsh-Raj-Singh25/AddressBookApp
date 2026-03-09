@@ -7,6 +7,9 @@ import com.addressBook.service.ContactService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -172,4 +175,26 @@ public class AddressBookServiceTest {
 		assertEquals("Harsh", importedContacts.get(0).getFirstName());
 		assertEquals("Bhopal", importedContacts.get(0).getCity());
 	}
+	//Uc15
+	@Test
+    public void testJSONRoundTripWithGSON() {
+        // 1. Setup Data
+        String bookName = "JSONTestBook";
+        abService.createNewAddressBook(bookName);
+        Contact contact = new Contact("Gaurav", "S", "Indrapuri", "Bhopal", "MP", "462022", "12345", "g@t.com");
+        abService.getAddressBook(bookName).getContactList().add(contact);
+
+        // 2. Execute Write
+        abService.writeToJSON();
+        Path path = Paths.get("src", "main", "resources", "contacts.json");
+        assertTrue(Files.exists(path), "JSON file should be physically created in resources");
+
+        // 3. Execute Read and Verify
+        Map<String, AddressBook> data = abService.readFromJSON();
+        
+        assertNotNull(data, "Reloaded data should not be null");
+        assertTrue(data.containsKey(bookName), "Reloaded data should contain the book name");
+        assertEquals("Gaurav", data.get(bookName).getContactList().get(0).getFirstName(), 
+                     "Contact details must match the original data after JSON conversion");
+    }
 }
