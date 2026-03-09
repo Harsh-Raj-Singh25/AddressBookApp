@@ -1,16 +1,13 @@
-# Address Book App - UC 13: File I/O Persistence
+# Address Book App - UC 14: OpenCSV Integration
 
 ## Overview
->Implemented data persistence using Java File I/O. This ensures that the contacts and address books created within the system can be stored in a physical `.txt` file.
+Implemented professional-grade data persistence using the OpenCSV library. This allows for structured data interchange, making the Address Book entries compatible with external tools like Microsoft Excel.
 
 ## Features Implemented
-- **Data Export**: Iterates through the Address Book Dictionary and writes every contact's details into a text file using `BufferedWriter`.
-- **Data Import**: Uses `Files.readAllLines()` to retrieve the stored data back into the application.
-- **Resource Management**: Utilized **try-with-resources** to ensure that file streams are closed automatically, preventing memory leaks.
+- **Structured Storage**: Contacts are stored with clear headers and comma-separated columns.
+- **Bean Mapping**: Automated the conversion between Java `Contact` objects and CSV rows using `StatefulBeanToCsv`.
+- **Path Reliability**: Maintained the standard of saving to `src/main/resources` with directory auto-creation.
 
-## Technical Details
-- **File Format**: Plain Text (Standardized via `Contact.toString()`).
-- **Storage Path**: Project root directory (`addressbook_data.txt`).
-- **Endpoints**:
-    - `POST /system/io/write`: Saves current state to disk.
-    - `GET /system/io/read`: Displays saved file content.
+## API Usage
+- **Write**: `POST http://localhost:8080/system/csv/write`
+- **Read**: `GET http://localhost:8080/system/csv/read`

@@ -2,13 +2,18 @@ package com.addressBook.service;
 
 import com.addressBook.model.AddressBook;
 import com.addressBook.model.Contact;
+import com.opencsv.bean.CsvToBeanBuilder;
+import com.opencsv.bean.StatefulBeanToCsv;
+import com.opencsv.bean.StatefulBeanToCsvBuilder;
 
 import org.springframework.stereotype.Service;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.Reader;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Collections;
 import java.util.HashMap;
@@ -16,6 +21,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.io.Writer; 
 
 @Service
 public class AddressBookService {
@@ -92,12 +98,43 @@ public class AddressBookService {
 			return "Error writing to file: " + e.getMessage();
 		}
 	}
+
 	// UC 13: Read Address Book Data from File (Basic Implementation)
 	public List<String> readFromFile() {
 		try {
 			return Files.readAllLines(Paths.get(FILE_PATH));
 		} catch (IOException e) {
 			return Collections.singletonList("Error reading file: " + e.getMessage());
+		}
+	}
+
+	private final Path CSV_PATH = Paths.get("src", "main", "resources", "contacts.csv");
+
+	// UC 14: Write Contacts to CSV using OpenCSV
+	public String writeToCSV() {
+		try {
+			Files.createDirectories(CSV_PATH.getParent());
+			try (Writer writer = Files.newBufferedWriter(CSV_PATH)) {
+				StatefulBeanToCsv<Contact> beanToCsv = new StatefulBeanToCsvBuilder<Contact>(writer).build();
+
+				// Collect all contacts across books to save into one CSV
+				List<Contact> allContacts = addressBookSystem.values().stream()
+						.flatMap(book -> book.getContactList().stream()).toList();
+
+				beanToCsv.write(allContacts);
+				return "CSV saved successfully at: " + CSV_PATH.toAbsolutePath();
+			}
+		} catch (Exception e) {
+			return "CSV Write Error: " + e.getMessage();
+		}
+	}
+
+	// UC 14: Read Contacts from CSV
+	public List<Contact> readFromCSV() {
+		try (Reader reader = Files.newBufferedReader(CSV_PATH)) {
+			return new CsvToBeanBuilder<Contact>(reader).withType(Contact.class).build().parse();
+		} catch (IOException e) {
+			return Collections.emptyList();
 		}
 	}
 }

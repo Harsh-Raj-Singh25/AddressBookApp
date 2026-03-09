@@ -155,4 +155,21 @@ public class AddressBookServiceTest {
 		java.io.File file = new java.io.File("src/main/resources/addressbook_data.txt");
 		assertTrue(file.exists(), "The persistence file should be created on disk.");
 	}
+	//UC14
+	@Test
+	public void testCSVRoundTrip() {
+		abService.createNewAddressBook("CSVBook");
+		Contact c1 = new Contact("Harsh", "Raj", "MP Nagar", "Bhopal", "MP", "462001", "98765", "h@t.com");
+		abService.getAddressBook("CSVBook").getContactList().add(c1);
+
+		// Write to CSV
+		abService.writeToCSV();
+
+		// Read from CSV
+		List<Contact> importedContacts = abService.readFromCSV();
+
+		assertFalse(importedContacts.isEmpty());
+		assertEquals("Harsh", importedContacts.get(0).getFirstName());
+		assertEquals("Bhopal", importedContacts.get(0).getCity());
+	}
 }

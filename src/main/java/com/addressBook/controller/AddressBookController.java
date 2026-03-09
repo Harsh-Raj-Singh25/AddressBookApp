@@ -66,9 +66,21 @@ public class AddressBookController {
 	public String writeData() {
 		return abService.writeToFile();
 	}
+
 	// UC 13: Read data from file
 	@GetMapping("/io/read")
 	public List<String> readData() {
 		return abService.readFromFile();
+	}
+
+	// UC 14: Trigger CSV Write
+	@PostMapping("/write")
+	public String writeCSV() {
+		return abService.writeToCSV();
+	}
+	// UC 14: Trigger CSV Read
+	@GetMapping("/read")
+	public List<Contact> readCSV() {
+		return abService.readFromCSV();
 	}
 }
