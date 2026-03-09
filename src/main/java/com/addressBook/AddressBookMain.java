@@ -101,20 +101,27 @@ public class AddressBookMain {
 
 		// UC 11 & 12: Sorting demonstration
 		// UC11
-		System.out.println("\n--- UC 11: Sorted Address Book Entries according to name ---"); 
+		System.out.println("\n--- UC 11: Sorted Address Book Entries according to name ---");
 		if (book != null) {
 			List<Contact> sortedList = contactService.getSortedContacts(book);
 
 			// Prints the person entry using the overridden toString() method
 			sortedList.forEach(System.out::println);
 		}
-		//UC12
+		// UC12
 		System.out.println("\n--- UC 12: Sorting by ZIP Code ---");
 		List<Contact> sortedByZip = contactService.getSortedByField(book, "zip");
 		sortedByZip.forEach(System.out::println);
-
 		System.out.println("\n--- UC 12: Sorting by City ---");
 		List<Contact> sortedByCity = contactService.getSortedByField(book, "city");
 		sortedByCity.forEach(System.out::println);
+
+		// UC13
+		System.out.println("\n--- UC 13: File IO Operation ---");
+		String status = abService.writeToFile();
+		System.out.println(status);
+		// Verify by reading the file content
+		System.out.println("Reading from file...");
+		abService.readFromFile().forEach(System.out::println);
 	}
 }

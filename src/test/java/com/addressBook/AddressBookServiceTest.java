@@ -145,4 +145,14 @@ public class AddressBookServiceTest {
 		assertEquals(2, counts.get("Bhopal")); //
 		assertEquals(1, counts.get("Indore")); //
 	}
+
+	// Uc13
+	@Test
+	public void testFileCreation() {
+		abService.createNewAddressBook("IO-Test");
+		abService.writeToFile();
+
+		java.io.File file = new java.io.File("src/main/resources/addressbook_data.txt");
+		assertTrue(file.exists(), "The persistence file should be created on disk.");
+	}
 }
