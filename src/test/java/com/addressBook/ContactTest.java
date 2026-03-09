@@ -117,9 +117,10 @@ public class ContactTest {
 
 	// UC11
 	private final ContactService contactService = new ContactService();
+
 	@Test
 	public void testAlphabeticalSortingByName() {
-		//  Create an Address Book and contacts in non-alphabetical order
+		// Create an Address Book and contacts in non-alphabetical order
 		AddressBook book = new AddressBook("TestBook");
 		Contact c1 = new Contact("Zoya", "Khan", "Addr1", "City1", "State1", "111", "999", "z@t.com");
 		Contact c2 = new Contact("Amit", "Sharma", "Addr2", "City2", "State2", "222", "888", "a@t.com");
@@ -127,12 +128,25 @@ public class ContactTest {
 		book.getContactList().addAll(Arrays.asList(c1, c2, c3));
 		// Execute sorting logic (UC 11)
 		List<Contact> sortedContacts = contactService.getSortedContacts(book);
-		//  Assertions: Check if the order is Amit -> Harsh -> Zoya
+		// Assertions: Check if the order is Amit -> Harsh -> Zoya
 		assertEquals("Amit", sortedContacts.get(0).getFirstName());
 		assertEquals("Harsh", sortedContacts.get(1).getFirstName());
 		assertEquals("Zoya", sortedContacts.get(2).getFirstName());
-		//  Verification of toString() output in Console
+		// Verification of toString() output in Console
 		System.out.println("Sorted Results:");
 		sortedContacts.forEach(System.out::println);
+	}
+
+	@Test
+	public void testSortByZipCode() {
+		AddressBook book = new AddressBook("ZipTest");
+		book.getContactList().add(new Contact("Alice", "W", "Add1", "City1", "ST", "90001", "1", "a@t.com"));
+		book.getContactList().add(new Contact("Bob", "S", "Add2", "City2", "ST", "10001", "2", "b@t.com"));
+
+		// Sorting by zip should put Bob (10001) before Alice (90001)
+		List<Contact> sorted = contactService.getSortedByField(book, "zip");
+
+		assertEquals("10001", sorted.get(0).getZip());
+		assertEquals("90001", sorted.get(1).getZip());
 	}
 }

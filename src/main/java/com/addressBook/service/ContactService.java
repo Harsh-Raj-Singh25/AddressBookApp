@@ -112,4 +112,24 @@ public class ContactService {
 						.thenComparing(Contact::getLastName, String.CASE_INSENSITIVE_ORDER))
 				.collect(Collectors.toList());
 	}
+
+	// UC 12: Sort entries by City, State, or Zip using Java Streams
+	public List<Contact> getSortedByField(AddressBook book, String field) {
+		Comparator<Contact> comparator;
+
+		switch (field.toLowerCase()) {
+		case "city":
+			comparator = Comparator.comparing(Contact::getCity, String.CASE_INSENSITIVE_ORDER);
+			break;
+		case "state":
+			comparator = Comparator.comparing(Contact::getState, String.CASE_INSENSITIVE_ORDER);
+			break;
+		case "zip":
+			comparator = Comparator.comparing(Contact::getZip);
+			break;
+		default: // Fallback to Name (UC 11)
+			comparator = Comparator.comparing(Contact::getFirstName, String.CASE_INSENSITIVE_ORDER);
+		}
+		return book.getContactList().stream().sorted(comparator).collect(Collectors.toList());
+	}
 }

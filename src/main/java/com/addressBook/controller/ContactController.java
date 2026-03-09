@@ -71,4 +71,14 @@ public class ContactController {
 
 		return service.getSortedContacts(book);
 	}
+
+	// UC 12: Endpoint to get sorted list by City, State, or Zip
+	@GetMapping("/{bookName}/sort/{field}")
+	public List<Contact> getSortedEntries(@PathVariable String bookName, @PathVariable String field) {
+		AddressBook book = abService.getAddressBook(bookName); // Retrieve book from Dictionary
+		if (book == null)
+			return null;
+
+		return service.getSortedByField(book, field);
+	}
 }

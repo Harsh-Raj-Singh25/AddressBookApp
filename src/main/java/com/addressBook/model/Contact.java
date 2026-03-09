@@ -18,8 +18,8 @@ public class Contact {
 	private String zip;
 	private String phoneNumber;
 	private String email;
-
-	@Override
+	
+	@Override // also for UC11
 	public String toString() {
 		return firstName + " LastName : " + lastName + " Address : " + address + " City : " + city + "State : " + state
 				+ " Zip: " + zip + "PhoneNumber :" + phoneNumber + " Email :" + email;

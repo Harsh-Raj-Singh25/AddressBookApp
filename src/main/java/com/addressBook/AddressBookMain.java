@@ -88,14 +88,33 @@ public class AddressBookMain {
 		Map<String, Long> cityCounts = abService.getCountByCity();
 		cityCounts.forEach((city, count) -> System.out.println("City: " + city + " | Total Contacts: " + count));
 
+		// using UC 6: Create an Address Book
+		abService.createNewAddressBook("TravelLog");
+		AddressBook book = abService.getAddressBook("TravelLog");
+
+		// using UC 2 & 5: Add contacts with different locations
+		List<Contact> contacts = Arrays.asList(
+				new Contact("Zoya", "Khan", "Street 1", "Bhopal", "MP", "462001", "98765", "z@t.com"),
+				new Contact("Amit", "Sharma", "Street 2", "Indore", "MP", "452001", "11111", "a@t.com"),
+				new Contact("Namrata", "Khapre", "St.Paul road", "Pandhurna", "MP", "10001", "22222", "n@n.com"));
+		contactService.addContacts(book, contacts);
+
+		// UC 11 & 12: Sorting demonstration
 		// UC11
-		System.out.println("\n--- UC 11: Sorted Address Book Entries ---");
-		AddressBook book1 = abService.getAddressBook("Personal");
-		if (book1 != null) {
-			List<Contact> sortedList = contactService.getSortedContacts(book1);
+		System.out.println("\n--- UC 11: Sorted Address Book Entries according to name ---"); 
+		if (book != null) {
+			List<Contact> sortedList = contactService.getSortedContacts(book);
 
 			// Prints the person entry using the overridden toString() method
 			sortedList.forEach(System.out::println);
 		}
+		//UC12
+		System.out.println("\n--- UC 12: Sorting by ZIP Code ---");
+		List<Contact> sortedByZip = contactService.getSortedByField(book, "zip");
+		sortedByZip.forEach(System.out::println);
+
+		System.out.println("\n--- UC 12: Sorting by City ---");
+		List<Contact> sortedByCity = contactService.getSortedByField(book, "city");
+		sortedByCity.forEach(System.out::println);
 	}
 }

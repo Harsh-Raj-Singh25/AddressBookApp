@@ -1,18 +1,13 @@
-# Address Book App - UC 11: Alphabetical Sorting of Contacts by Name
+# Address Book App - UC 12: Field-Based Sorting
 
 ## Overview
-Implemented alphabetical sorting of address book entries based on the Person's name to improve data organization and readability.
+>Implemented advanced sorting capabilities to organize address book entries by geographic location (City, State, or Zip).
 
 ## Features Implemented
-- **Alphabetical Sorting**: Entries are sorted primarily by `firstName` and secondarily by `lastName`.
-- **Java Streams & Collection Library**: Leveraged `stream().sorted()` for clean and efficient sorting logic.
-- **Custom Console Output**: Overrode the `toString()` method in the `Contact` model to provide a standardized format when printing entries to the console.
+- **Multi-Field Sorting**: Added functions to sort entries dynamically based on user-requested fields.
+- **Stream API Integration**: Utilized `Comparator.comparing()` and `stream().sorted()` for clean, functional sorting logic.
+- **Dictionary Management**: Integrated with the existing Address Book Dictionary system (UC 6) to sort entries within specific books.
 
 ## Technical Details
-- **Comparator**: `Comparator.comparing(Contact::getFirstName)`
-- **Output Method**: Overridden `toString()` for console logging.
-- **Endpoint**: `GET /contacts/{bookName}/sorted`
-
-## Validation for UC 11
-- **Unit Testing**: Implemented JUnit tests to verify alphabetical order (A-Z) of contacts retrieved from the service.
-- **Manual Verification**: Use the `/contacts/{bookName}/sorted` endpoint to view the JSON output or check the console logs to see the formatted `toString()` output.
+- **Logic**: `stream().sorted(Comparator.comparing(Contact::getCity))`.
+- **API Endpoint**: `GET /contacts/{bookName}/sort/{field}`
