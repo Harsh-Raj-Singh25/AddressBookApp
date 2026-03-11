@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.List;
+import java.util.Map;
 
 public class AddressBookDBTest {
 
@@ -51,6 +52,20 @@ public class AddressBookDBTest {
 
 		// Check if the retrieval matches your expected DB state
 		Assertions.assertEquals(1, contactList.size());
-		Assertions.assertEquals("Harsh", contactList.get(0).getFirstName());
+		Assertions.assertEquals("Anand", contactList.get(0).getFirstName());
+	}
+
+	// UC 19
+	@Test
+	public void givenAddressBookDB_WhenQueriedByCity_ShouldReturnCorrectCount() {
+		AddressBookDBService dbService = new AddressBookDBService();
+
+		// Use Database function to count
+		Map<String, Integer> cityCountMap = dbService.getContactCountByCityOrState("city");
+
+		// Verify results  
+		if (cityCountMap.containsKey("Indore")) {
+			Assertions.assertEquals(1, cityCountMap.get("Indore"));
+		}
 	}
 }

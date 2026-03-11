@@ -4,7 +4,9 @@ import com.addressBook.model.AddressBook;
 import com.addressBook.model.Contact;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class AddressBookDBService {
 
@@ -74,5 +76,26 @@ public class AddressBookDBService {
 			e.printStackTrace();
 		}
 		return contactList;
+	}
+	// UC 19
+	public Map<String, Integer> getContactCountByCityOrState(String type) {
+	    // Determine column based on input (City or State)
+	    String column = type.equalsIgnoreCase("city") ? "city" : "state";
+	    String sql = "SELECT " + column + ", COUNT(*) as count FROM contact GROUP BY " + column;
+	    
+	    Map<String, Integer> countMap = new HashMap<>();
+
+	    // Use JDBC for CRUD operation with DB
+	    try (Connection connection = this.getConnection();
+	         Statement statement = connection.createStatement();
+	         ResultSet resultSet = statement.executeQuery(sql)) {
+	        
+	        while (resultSet.next()) {
+	            countMap.put(resultSet.getString(column), resultSet.getInt("count"));
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+	    return countMap;
 	}
 }

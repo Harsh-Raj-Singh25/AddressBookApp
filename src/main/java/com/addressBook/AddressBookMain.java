@@ -169,6 +169,14 @@ public class AddressBookMain {
 		} else {
 			filteredContacts.forEach(System.out::println);
 		}
+		//UC19
+		System.out.println("\n--- UC 19: Contact Count by City ---");
+		Map<String, Integer> cityCounts1 = dbService.getContactCountByCityOrState("city");
+		cityCounts1.forEach((city, count) -> System.out.println(city + ": " + count));
+
+		System.out.println("\n--- UC 19: Contact Count by State ---");
+		Map<String, Integer> stateCounts = dbService.getContactCountByCityOrState("state");
+		stateCounts.forEach((state, count) -> System.out.println(state + ": " + count));
 	}
 
 }
