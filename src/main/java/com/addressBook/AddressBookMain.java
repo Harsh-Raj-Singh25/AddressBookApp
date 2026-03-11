@@ -2,6 +2,7 @@ package com.addressBook;
 
 import com.addressBook.model.AddressBook;
 import com.addressBook.model.Contact;
+import com.addressBook.service.AddressBookDBService;
 import com.addressBook.service.AddressBookService;
 import com.addressBook.service.ContactService;
 import org.springframework.boot.SpringApplication;
@@ -134,14 +135,24 @@ public class AddressBookMain {
 		System.out.println("\n--- UC 15: Saving to JSON ---");
 		String writeStatus = abService.writeToJSON();
 		System.out.println(writeStatus);
-
 		// 3. UC 15: Read from JSON
 		System.out.println("\n--- UC 15: Reloading from JSON ---");
 		Map<String, AddressBook> reloadedData = abService.readFromJSON();
-
 		reloadedData.forEach((bookName, content) -> {
 			System.out.println("Address Book: " + bookName);
 			content.getContactList().forEach(System.out::println);
 		});
+		
+		// UC 16: Initialize DB Service
+        AddressBookDBService dbService = new AddressBookDBService();
+        System.out.println("\n--- UC 16: Retrieving Data from MySQL via JDBC ---");     
+        // Retrieve data
+        List<Contact> contactslist = dbService.readData();
+        if (contactslist.isEmpty()) {
+            System.out.println("No records found in the database.");
+        } else {
+            System.out.println("Total Records Found: " + contactslist.size());
+            contactslist.forEach(contact -> System.out.println("Retrieved: " + contact));
+        }
 	}
 }
