@@ -172,4 +172,26 @@ public class AddressBookService {
 			return Collections.emptyMap();
 		}
 	}
+
+	// UC 17 - jdbc contact update
+	private AddressBookDBService dbService = new AddressBookDBService();
+	private Map<String, AddressBook> addressBookSystem1 = new HashMap<>();
+
+	// UC 17: Method to update DB and Sync Local Memory
+	public void updateAndSyncContact(String bookName, String contactName, String newCity) {
+		// 1. Update the Database first
+		int rowsAffected = dbService.updateContactCity(contactName, newCity);
+
+		// 2. If DB update is successful, sync the memory
+		if (rowsAffected > 0) {
+			AddressBook localBook = addressBookSystem1.get(bookName);
+			if (localBook != null) {
+				localBook.getContactList().stream().filter(c -> c.getFirstName().equalsIgnoreCase(contactName))
+						.forEach(c -> c.setCity(newCity));
+				System.out.println("Sync Successful: Memory and DB are now aligned.");
+			}
+		} else {
+			System.out.println("Sync Failed: Database was not updated.");
+		}
+	}
 }

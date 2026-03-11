@@ -142,17 +142,24 @@ public class AddressBookMain {
 			System.out.println("Address Book: " + bookName);
 			content.getContactList().forEach(System.out::println);
 		});
-		
+
 		// UC 16: Initialize DB Service
-        AddressBookDBService dbService = new AddressBookDBService();
-        System.out.println("\n--- UC 16: Retrieving Data from MySQL via JDBC ---");     
-        // Retrieve data
-        List<Contact> contactslist = dbService.readData();
-        if (contactslist.isEmpty()) {
-            System.out.println("No records found in the database.");
-        } else {
-            System.out.println("Total Records Found: " + contactslist.size());
-            contactslist.forEach(contact -> System.out.println("Retrieved: " + contact));
-        }
+		AddressBookDBService dbService = new AddressBookDBService();
+		System.out.println("\n--- UC 16: Retrieving Data from MySQL via JDBC ---");
+		// Retrieve data
+		List<Contact> contactslist = dbService.readData();
+		if (contactslist.isEmpty()) {
+			System.out.println("No records found in the database.");
+		} else {
+			System.out.println("Total Records Found: " + contactslist.size());
+			contactslist.forEach(contact -> System.out.println("Retrieved: " + contact));
+		}
+		//UC17
+		System.out.println("\n--- UC 17: Updating DB and Syncing Memory ---");
+		dbService.updateContactCity("Anand", "Indore");
+		// Verify sync by reading again
+		List<Contact> updatedContacts = dbService.readData();
+		updatedContacts.forEach(System.out::println);
 	}
+
 }

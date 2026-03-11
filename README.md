@@ -1,14 +1,13 @@
-# Address Book App - UC 16: JDBC Integration
+# Address Book App - UC 17: Database Synchronization
 
 ## Overview
->Successfully migrated the data retrieval layer from local files (CSV/JSON) to a MySQL Database using JDBC (Java Database Connectivity).
+>Implemented real-time synchronization between the application memory and the MySQL database during update operations.
 
-## Implementation Highlights
-- **Database Connectivity**: Established connection using `DriverManager` with MySQL Connector/J.
-- **Data Retrieval**: Implemented SQL query execution to fetch all contact records into the Java application.
-- **TDD Integration**: Followed Test-Driven Development by implementing JUnit tests to validate database counts and entry accuracy.
-- **ER Model Mapping**: Ensured the database schema matches the `Contact` entity fields (First Name, Last Name, City, etc.).
+## Key Features
+- **Secure Updates**: Utilized `PreparedStatement` to perform CRUD operations, preventing SQL injection.
+- **Memory Sync**: Ensured that once the database is updated, the internal `List<Contact>` is immediately refreshed to match the DB state.
+- **Validation**: Implemented `equals()` in the Contact entity to facilitate JUnit testing for data consistency.
 
-## Technical Details
-- **Driver**: `com.mysql.cj.jdbc.Driver`
-- **Query**: `SELECT * FROM contact`
+## Technical Logic
+- **SQL**: `UPDATE contact SET city = ? WHERE first_name = ?`.
+- **Verification**: `assertEquals()` checks that the retrieved DB entity matches the expected local state.

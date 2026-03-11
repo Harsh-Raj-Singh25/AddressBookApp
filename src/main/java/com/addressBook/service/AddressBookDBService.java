@@ -1,5 +1,6 @@
-package com.addressBook.service; 
+package com.addressBook.service;
 
+import com.addressBook.model.AddressBook;
 import com.addressBook.model.Contact;
 import java.sql.*;
 import java.util.ArrayList;
@@ -31,4 +32,23 @@ public class AddressBookDBService {
 		}
 		return contactList;
 	}
+
+	// UC17 - update logic
+	public int updateContactCity(String firstName, String newCity) {
+		String sql = "UPDATE contact SET city = ? WHERE first_name = ?";
+
+		try (Connection connection = this.getConnection();
+				PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+
+			// Use PreparedStatement to safely set values
+			preparedStatement.setString(1, newCity);
+			preparedStatement.setString(2, firstName);
+
+			int result = preparedStatement.executeUpdate();
+			return result; // Returns number of rows affected
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return 0;
+		}
+	} 
 }
