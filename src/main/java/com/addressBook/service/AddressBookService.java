@@ -194,4 +194,18 @@ public class AddressBookService {
 			System.out.println("Sync Failed: Database was not updated.");
 		}
 	}
+
+	// UC 20- synchronization logic
+	public void addContactAndSync(String bookName, Contact newContact) {
+		// 1. Add to Database via JDBC
+		boolean isAdded = dbService.addNewContact(newContact);
+
+		// 2. Sync local memory if DB operation was successful
+		if (isAdded) {
+			AddressBook localBook = addressBookSystem.get(bookName);
+			if (localBook != null) {
+				localBook.getContactList().add(newContact);
+			}
+		}
+	}
 }

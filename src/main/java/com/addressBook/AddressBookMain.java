@@ -169,7 +169,7 @@ public class AddressBookMain {
 		} else {
 			filteredContacts.forEach(System.out::println);
 		}
-		//UC19
+		// UC19
 		System.out.println("\n--- UC 19: Contact Count by City ---");
 		Map<String, Integer> cityCounts1 = dbService.getContactCountByCityOrState("city");
 		cityCounts1.forEach((city, count) -> System.out.println(city + ": " + count));
@@ -177,6 +177,13 @@ public class AddressBookMain {
 		System.out.println("\n--- UC 19: Contact Count by State ---");
 		Map<String, Integer> stateCounts = dbService.getContactCountByCityOrState("state");
 		stateCounts.forEach((state, count) -> System.out.println(state + ": " + count));
+
+		// UC20
+		System.out.println("\n--- UC 20: Adding New Contact with Transaction ---");
+		Contact gaury = new Contact("Gaurav", "S", "Indrapuri", "Bhopal", "MP", "462022", "1234567890", "g@test.com");
+		abService.addContactAndSync("Friends", gaury);
+		// Read back to confirm
+		dbService.readData().forEach(System.out::println);
 	}
 
 }

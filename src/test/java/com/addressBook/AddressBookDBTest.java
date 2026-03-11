@@ -18,7 +18,7 @@ public class AddressBookDBTest {
 		List<Contact> contactList = dbService.readData();
 
 		// Assert that the list is retrieved (matches your current DB entries count)
-		Assertions.assertEquals(1, contactList.size());
+		Assertions.assertEquals(4, contactList.size());
 	}
 
 	// UC17
@@ -51,7 +51,7 @@ public class AddressBookDBTest {
 		List<Contact> contactList = dbService.getContactsByDateRange(start, end);
 
 		// Check if the retrieval matches your expected DB state
-		Assertions.assertEquals(1, contactList.size());
+		Assertions.assertEquals(4, contactList.size());
 		Assertions.assertEquals("Anand", contactList.get(0).getFirstName());
 	}
 
@@ -63,9 +63,27 @@ public class AddressBookDBTest {
 		// Use Database function to count
 		Map<String, Integer> cityCountMap = dbService.getContactCountByCityOrState("city");
 
-		// Verify results  
+		// Verify results
 		if (cityCountMap.containsKey("Indore")) {
 			Assertions.assertEquals(1, cityCountMap.get("Indore"));
 		}
+	}
+
+	// Uc20
+	@Test
+	public void givenNewContact_WhenAddedToDB_ShouldSyncWithAddressBookMemory() {
+		AddressBookDBService dbService = new AddressBookDBService();
+		Contact newContact = new Contact("Gaurav", "S", "Indrapuri", "Bhopal", "MP", "462022", "1234567890",
+				"g@test.com");
+
+		// Get initial count
+		int initialCount = dbService.readData().size();
+
+		// UC 20: Add new contact
+		dbService.addNewContact(newContact);
+
+		// Verify count increased
+		int finalCount = dbService.readData().size();
+		Assertions.assertEquals(initialCount + 1, finalCount);
 	}
 }

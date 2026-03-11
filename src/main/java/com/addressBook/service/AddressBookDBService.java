@@ -77,25 +77,74 @@ public class AddressBookDBService {
 		}
 		return contactList;
 	}
+
 	// UC 19
 	public Map<String, Integer> getContactCountByCityOrState(String type) {
-	    // Determine column based on input (City or State)
-	    String column = type.equalsIgnoreCase("city") ? "city" : "state";
-	    String sql = "SELECT " + column + ", COUNT(*) as count FROM contact GROUP BY " + column;
-	    
-	    Map<String, Integer> countMap = new HashMap<>();
+		// Determine column based on input (City or State)
+		String column = type.equalsIgnoreCase("city") ? "city" : "state";
+		String sql = "SELECT " + column + ", COUNT(*) as count FROM contact GROUP BY " + column;
 
-	    // Use JDBC for CRUD operation with DB
-	    try (Connection connection = this.getConnection();
-	         Statement statement = connection.createStatement();
-	         ResultSet resultSet = statement.executeQuery(sql)) {
-	        
-	        while (resultSet.next()) {
-	            countMap.put(resultSet.getString(column), resultSet.getInt("count"));
-	        }
-	    } catch (SQLException e) {
-	        e.printStackTrace();
-	    }
-	    return countMap;
+		Map<String, Integer> countMap = new HashMap<>();
+
+		// Use JDBC for CRUD operation with DB
+		try (Connection connection = this.getConnection();
+				Statement statement = connection.createStatement();
+				ResultSet resultSet = statement.executeQuery(sql)) {
+
+			while (resultSet.next()) {
+				countMap.put(resultSet.getString(column), resultSet.getInt("count"));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return countMap;
+	}
+
+	// Uc20
+	public boolean addNewContact(Contact contact) {
+		String sql = "INSERT INTO contact (first_name, last_name, address, city, state, zip, phone_number, email, date_added) "
+				+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+		Connection connection = null;
+
+		try {
+			connection = this.getConnection();
+			// UC 20: Ensure DB Transaction is implemented
+			connection.setAutoCommit(false);
+
+			try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+				preparedStatement.setString(1, contact.getFirstName());
+				preparedStatement.setString(2, contact.getLastName());
+				preparedStatement.setString(3, contact.getAddress());
+				preparedStatement.setString(4, contact.getCity());
+				preparedStatement.setString(5, contact.getState());
+				preparedStatement.setString(6, contact.getZip());
+				preparedStatement.setString(7, contact.getPhoneNumber());
+				preparedStatement.setString(8, contact.getEmail());
+				preparedStatement.setDate(9, java.sql.Date.valueOf(java.time.LocalDate.now()));
+
+				preparedStatement.executeUpdate();
+
+				// Commit transaction if all steps succeed
+				connection.commit();
+				return true;
+			} catch (SQLException e) {
+				// Rollback if any part of the process fails
+				if (connection != null)
+					connection.rollback();
+				throw e;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		} finally {
+			if (connection != null) {
+				try {
+					connection.setAutoCommit(true);
+					connection.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
 	}
 }

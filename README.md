@@ -1,13 +1,13 @@
-# Address Book App - UC 19: SQL Aggregation Functions
+# Address Book App - UC 20: Transactional DB Insertion
 
 ## Overview
->Enhanced the data reporting capabilities of the Address Book System by implementing server-side aggregation for contact statistics.
+>Implemented the capability to persist new contacts into the MySQL database while ensuring data integrity through formal transaction management.
 
 ## Features Implemented
-- **Aggregate Reporting**: Successfully utilized the `COUNT` and `GROUP BY` database functions to calculate contact density by region.
-- **Dynamic Querying**: Developed a flexible JDBC method that can toggle between City and State statistics.
-- **TDD Verification**: Maintained the TDD approach by ensuring the application correctly interprets summarized results from MySQL.
+- **JDBC Persistence**: Added logic to perform SQL `INSERT` operations using `PreparedStatement`.
+- **Transaction Management**: Configured manual `commit()` and `rollback()` logic to ensure that if multiple tables were ever impacted, the database remains in a consistent state.
+- **Atomic Operations**: Used `setAutoCommit(false)` to wrap the insertion process, adhering to ACID properties.
 
-## Technical Details
-- **Database Function**: `SELECT city, COUNT(*) FROM contact GROUP BY city;`
-- **JDBC Implementation**: Used standard `Statement` and `ResultSet` to fetch summarized data.
+## Technical Highlights
+- **Transaction Control**: Implementation ensures that partial data is never saved if an error occurs during the insertion process.
+- **Date Handling**: Automatically assigns the current system date to the `date_added` field during insertion.
