@@ -50,5 +50,29 @@ public class AddressBookDBService {
 			e.printStackTrace();
 			return 0;
 		}
-	} 
+	}
+
+	// UC18
+	public List<Contact> getContactsByDateRange(String startDate, String endDate) {
+		List<Contact> contactList = new ArrayList<>();
+		// Use JDBC for CRUD operation with DB
+		String sql = "SELECT * FROM contact WHERE date_added BETWEEN ? AND ?";
+
+		try (Connection connection = this.getConnection();
+				PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+
+			preparedStatement.setString(1, startDate);
+			preparedStatement.setString(2, endDate);
+
+			ResultSet resultSet = preparedStatement.executeQuery();
+			while (resultSet.next()) {
+				contactList.add(new Contact(resultSet.getString("first_name"), resultSet.getString("last_name"),
+						resultSet.getString("address"), resultSet.getString("city"), resultSet.getString("state"),
+						resultSet.getString("zip"), resultSet.getString("phone_number"), resultSet.getString("email")));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return contactList;
+	}
 }

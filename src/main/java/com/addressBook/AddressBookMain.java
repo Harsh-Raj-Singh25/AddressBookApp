@@ -154,12 +154,21 @@ public class AddressBookMain {
 			System.out.println("Total Records Found: " + contactslist.size());
 			contactslist.forEach(contact -> System.out.println("Retrieved: " + contact));
 		}
-		//UC17
+		// UC17
 		System.out.println("\n--- UC 17: Updating DB and Syncing Memory ---");
 		dbService.updateContactCity("Anand", "Indore");
 		// Verify sync by reading again
 		List<Contact> updatedContacts = dbService.readData();
 		updatedContacts.forEach(System.out::println);
+
+		// UC18
+		System.out.println("\n--- UC 18: Retrieving Contacts by Date Range ---");
+		List<Contact> filteredContacts = dbService.getContactsByDateRange("2026-01-01", "2026-03-11");
+		if (filteredContacts.isEmpty()) {
+			System.out.println("No contacts added in this period.");
+		} else {
+			filteredContacts.forEach(System.out::println);
+		}
 	}
 
 }
